@@ -1,0 +1,64 @@
+{
+  "name": "stitch-api-client",
+  "version": "0.0.1",
+  "description": "A simple Stitch API client library for node",
+  "keywords": ["stitch", "client", "api", "push"],
+  "homepage": "https://github.com/ealanisg/stitch-api-client",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test-simple": "nyc mocha \"./test/**/*.spec.js\"",
+    "test": "yarn run lint && yarn run test-simple",
+    "t": "yarn test",
+    "ts": "yarn run test-simple",
+    "tsv": "yarn run test-simple --verbose"
+  },
+  "author": "Ezequiel Alanis <ealanisg@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "0.21.1",
+    "joi": "17.4.0"
+  },
+  "nyc": {
+    "tempDir": "./coverage/.nyc_output",
+    "report-dir": "./coverage",
+    "check-coverage": true,
+    "per-file": false,
+    "lines": 100,
+    "statements": 100,
+    "functions": 100,
+    "branches": 100,
+    "include": [
+      "**/*.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "require": [
+      "@babel/register"
+    ],
+    "extension": [],
+    "cache": true,
+    "all": true,
+    "babel": true,
+    "exclude": [
+      "node_modules/*",
+      "coverage/*",
+      "lib/*"
+    ]
+  },
+  "devDependencies": {
+    "@babel/register": "7.13.14",
+    "chai": "4.3.4",
+    "eslint": "7.24.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-json": "2.1.2",
+    "eslint-plugin-markdown": "2.0.1",
+    "eslint-plugin-mocha": "8.1.0",
+    "mocha": "8.3.2",
+    "node-tdd": "3.0.4",
+    "nyc": "15.1.0"
+  }
+}

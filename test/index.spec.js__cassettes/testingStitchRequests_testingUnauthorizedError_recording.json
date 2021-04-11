@@ -1,0 +1,29 @@
+[
+  {
+    "scope": "https://api.stitchdata.com:443",
+    "method": "POST",
+    "path": "/v2/import/validate",
+    "body": [
+      {
+        "table_name": "table",
+        "data": {
+          "key_for_upsert": 1,
+          "n": 2
+        },
+        "key_names": [
+          "key_for_upsert"
+        ],
+        "sequence": 1589572595713,
+        "action": "upsert",
+        "client_id": 123456
+      }
+    ],
+    "status": 401,
+    "response": {
+      "status": "ERROR",
+      "error": "Not authorized.",
+      "errors": "Not authorized."
+    },
+    "responseIsBinary": false
+  }
+]
