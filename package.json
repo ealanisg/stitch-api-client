@@ -1,6 +1,6 @@
 {
   "name": "stitch-api-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple Stitch API client library for node",
   "keywords": ["stitch", "client", "api", "push"],
   "homepage": "https://github.com/ealanisg/stitch-api-client",
