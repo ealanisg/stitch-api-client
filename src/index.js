@@ -1,7 +1,8 @@
 const Joi = require('joi');
 const axios = require('axios').default;
 const push = require('./core/push');
-const { configSchema, validMessage } = require('./util/schemas');
+const prepare = require('./util/prepare');
+const { configSchema } = require('./util/schemas');
 
 module.exports = (config) => {
   Joi.assert(config, configSchema);
@@ -15,20 +16,13 @@ module.exports = (config) => {
     timeout: 2500
   });
   return {
-    message: (props) => {
-      const message = {
-        ...props,
-        ...(props.sequence === undefined)
-          ? { sequence: Date.now() }
-          : {}
-      };
-      return validMessage(message);
-    },
     add: (messages) => (Array.isArray(messages) ? messages : [messages])
-      .forEach((message) => batch.push({
-        ...message,
-        client_id: Number(clientId)
-      })),
+      .forEach((message) => {
+        batch.push(prepare({
+          ...message,
+          client_id: clientId
+        }));
+      }),
     flush: async (dryrun = false) => push(dryrun, batch, axiosClient, config)
   };
 };

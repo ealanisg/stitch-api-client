@@ -5,13 +5,13 @@
     "path": "/v2/import/push",
     "body": [
       {
-        "table_name": "test_table",
+        "table_name": "table",
         "data": {
-          "id": 1,
-          "description": "desc"
+          "key_for_upsert": 1,
+          "n": 2
         },
         "key_names": [
-          "id"
+          "key_for_upsert"
         ],
         "sequence": 1589572595713,
         "action": "upsert",

@@ -1,39 +1,48 @@
 const expect = require('chai').expect;
 const { describe } = require('node-tdd');
-const { configSchema, validMessage } = require('../../src/util/schemas');
+const { configSchema, messageSchema } = require('../../src/util/schemas');
 
 describe('Testing Schemas', () => {
-  it('Testing validMessage error', () => {
-    const result = validMessage({
+  it('Testing messageSchema error', () => {
+    const { error } = messageSchema.validate({
       table_name: 25,
       sequence: '',
       data: {},
       key_names: ['a'],
       action: 'append',
       other: 5
+    }, { abortEarly: false });
+    expect(error).to.contain({
+      name: 'ValidationError',
+      message: [
+        '"table_name" must be a string.',
+        '"sequence" must be a number.',
+        '"client_id" is required.',
+        '"other" is not allowed'
+      ].join(' ')
     });
-    expect(result).to.equal([
-      '"table_name" must be a string',
-      '"sequence" must be a number',
-      '"other" is not allowed'
-    ].join(', '));
   });
 
-  it('Testing validMessage ok', () => {
-    const result = validMessage({
+  it('Testing messageSchema ok', () => {
+    const { error, value } = messageSchema.validate({
       table_name: 'table',
       data: {
         key_for_upsert: 1,
         n: 2
       },
-      key_names: ['key_for_upsert']
+      client_id: 123456,
+      key_names: ['key_for_upsert'],
+      sequence: 123456789
     }, { abortEarly: false });
-    expect(result).to.deep.equal({
+    expect(error).to.equal(undefined);
+    expect(value).to.deep.equal({
       table_name: 'table',
+      client_id: 123456,
       data: {
         key_for_upsert: 1,
         n: 2
       },
+      sequence: 123456789,
       key_names: ['key_for_upsert'],
       action: 'upsert'
     });

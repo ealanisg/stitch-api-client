@@ -9,6 +9,14 @@ describe('Testing Stitch requests', {
   timeout: 50000
 }, () => {
   let stitch = {};
+  const message = {
+    table_name: 'table',
+    data: {
+      key_for_upsert: 1,
+      n: 2
+    },
+    key_names: ['key_for_upsert']
+  };
   beforeEach(() => {
     stitch = Stitch({
       client_id: 123456,
@@ -27,14 +35,6 @@ describe('Testing Stitch requests', {
   });
 
   it('Testing flush one message batch (dryrun) only validates', async () => {
-    const message = stitch.message({
-      table_name: 'table',
-      data: {
-        key_for_upsert: 1,
-        n: 2
-      },
-      key_names: ['key_for_upsert']
-    });
     stitch.add(message);
     const result = await stitch.flush(true);
     expect(result).to.deep.equal({
@@ -44,14 +44,6 @@ describe('Testing Stitch requests', {
   });
 
   it('Testing unauthorized error', async () => {
-    const message = stitch.message({
-      table_name: 'table',
-      data: {
-        key_for_upsert: 1,
-        n: 2
-      },
-      key_names: ['key_for_upsert']
-    });
     stitch.add(message);
     const result = await stitch.flush(true);
     expect(result).to.deep.equal({
@@ -62,14 +54,6 @@ describe('Testing Stitch requests', {
   });
 
   it('Testing connection error', async () => {
-    const message = stitch.message({
-      table_name: 'table',
-      data: {
-        key_for_upsert: 1,
-        n: 2
-      },
-      key_names: ['key_for_upsert']
-    });
     stitch.add(message);
     const result = await stitch.flush(true);
     expect(result).to.deep.equal({
@@ -80,24 +64,13 @@ describe('Testing Stitch requests', {
   });
 
   it('Testing flush two message batch (dryrun) only validates', async () => {
-    const message1 = stitch.message({
-      table_name: 'table',
-      data: {
-        key_for_upsert: 1,
-        n: 2
-      },
-      key_names: ['key_for_upsert']
-    });
-    const message2 = stitch.message({
-      table_name: 'table',
-      sequence: Date.now() + 1,
-      data: {
-        key_for_upsert: 2,
-        n: 3
-      },
-      key_names: ['key_for_upsert']
-    });
-    stitch.add([message1, message2]);
+    const message2 = {
+      ...message,
+      sequence: Date.now() + 1
+    };
+    stitch.add([
+      message, message2
+    ]);
     const result = await stitch.flush(true);
     expect(result).to.deep.equal({
       status: 'OK',
@@ -106,14 +79,6 @@ describe('Testing Stitch requests', {
   });
 
   it('Testing flush message batch push', async () => {
-    const message = stitch.message({
-      table_name: 'test_table',
-      data: {
-        id: 1,
-        description: 'desc'
-      },
-      key_names: ['id']
-    });
     stitch.add(message);
     const result = await stitch.flush();
     expect(result).to.deep.equal({
