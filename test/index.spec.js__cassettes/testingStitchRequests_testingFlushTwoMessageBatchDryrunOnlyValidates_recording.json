@@ -21,8 +21,8 @@
         "table_name": "table",
         "sequence": 1589572595714,
         "data": {
-          "key_for_upsert": 2,
-          "n": 3
+          "key_for_upsert": 1,
+          "n": 2
         },
         "key_names": [
           "key_for_upsert"
